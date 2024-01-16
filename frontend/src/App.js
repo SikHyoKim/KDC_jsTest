@@ -26,6 +26,8 @@ class App {
           this.setState(data)
         // 로딩 hide
         this.Loading.hide();
+        // 로컬에 저장
+          this.saveResult(data);
         });
       },
       onRandomSearch: () => {
@@ -56,11 +58,22 @@ class App {
         image: null
       }
     });
+    this.init();
   }
 
   setState(nextData) {
     console.log(this);
     this.data = nextData;
     this.searchResult.setState(nextData);
+  }
+
+  saveResult(result){
+    // JSON형태로 저장을 한다면  json.stringify로 바꿔 줘야 한다.
+    localStorage.setItem('lastResult', JSON.stringify(result));
+  }
+
+  init(){
+    const lastResult = localStorage.getItem('lastResult') === null ? [] : JSON.parse(localStorage.getItem('lastResult'));
+    this.setState(lastResult);
   }
 }
