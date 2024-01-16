@@ -1,7 +1,7 @@
 const TEMPLATE = '<input type="text">';
 
 class SearchInput {
-  constructor({ $target, onSearch }) {
+  constructor({ $target, onSearch, onRandomSearch }) {
     const $wrapper = document.createElement("section");
     $target.appendChild($wrapper);
     
@@ -18,7 +18,7 @@ class SearchInput {
       }
     });
 
-    const $randomButton = document.createElement('randomButton');
+    const $randomButton = document.createElement('Button');
     this.$randomButton = $randomButton;
     this.$randomButton.textContent = '랜덤';
 
@@ -26,7 +26,7 @@ class SearchInput {
     $wrapper.appendChild($randomButton);
 
     $randomButton.addEventListener("click", e => {
-      onSearch('아');
+      onRandomSearch();
     });
   }
   render() {}
