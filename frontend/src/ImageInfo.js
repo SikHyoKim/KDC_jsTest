@@ -1,3 +1,5 @@
+import api from "./api.js";
+
 class ImageInfo {
   $imageInfo = null;
   data = null;
@@ -18,15 +20,22 @@ class ImageInfo {
     this.render();
   }
 
-  showDetail(data){
-    // 상세 정보 요청
-    api.fetchCatsDetail(data.cat.id).then(({ data }) => {
-      // 정보를 업데이트
+  async showDetail(data){
+    const detailInfo = await api.fetchCatsDetail(data.cat.id);
+    if (detailInfo){
       this.setState({
-        visible: true,
-        cat: data
-      });
-    })
+            visible: true,
+            cat: detailInfo.data
+          });
+    }
+    // 상세 정보 요청
+    // api.fetchCatsDetail(data.cat.id).then(({ data }) => {
+    //   // 정보를 업데이트
+    //   this.setState({
+    //     visible: true,
+    //     cat: data
+    //   });
+    // })
 
   }
   closeImageInfo(){
@@ -54,11 +63,7 @@ class ImageInfo {
         </div>`;
       this.$imageInfo.style.display = "block";
 
-      // this.$imageInfo.querySelector('.close').addEventListener('click', (e) => {
-      //   this.closeImageInfo();
-      // })
-      // keypress, keydown, keyup 차이가 있으므로 
-      // 이벤트 로그를 찍어 보고 반환 값 확인
+      // TODO: keypress, keydown, keyup 차이 리서치
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape'){
           this.closeImageInfo();
@@ -75,3 +80,5 @@ class ImageInfo {
     }
   }
 }
+
+export default ImageInfo;
