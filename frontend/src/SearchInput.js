@@ -4,7 +4,9 @@ const TEMPLATE = '<input type="text">';
 
 class SearchInput {
   constructor({ $target, onSearch, onRandomSearch }) {
+    
     const $wrapper = document.createElement("section");
+    $wrapper.className = "SearchInputSection"
     $target.appendChild($wrapper);
     
     const $searchInput = document.createElement("input");
@@ -16,18 +18,33 @@ class SearchInput {
 
     $searchInput.addEventListener("keypress", e => {
       if (e.key=== "Enter") {
-        onSearch(e.target.value);
+        onSearch(e.target.value, this.$limitCount.value);
         // 최근 키워드 저장
         this.KeywordHistory.addKeyword(e.target.value);
       }
     });
 
+    // 셀렉트 UI
+    const $limitCount = document.createElement('select')
+    this.$limitCount = $limitCount;
+    this.$limitCount.classList = 'LimitCount';
 
-    const $randomButton = document.createElement('Button');
+    const LimitCountOptions = [10, 25, 50];
+    LimitCountOptions.map((option) => {
+      let $option = document.createElement('option');
+      $option.value = option;
+      $option.textContent = `${option}`;
+      $limitCount.appendChild($option)
+    })
+
+    $wrapper.appendChild($limitCount)
+
+    // 랜덤 버튼
+    const $randomButton = document.createElement('button');
     this.$randomButton = $randomButton;
-    this.$randomButton.textContent = '랜덤';
-
     this.$randomButton.className = 'RandomButton';
+    this.$randomButton.textContent = '랜덤고양이';
+
     $wrapper.appendChild($randomButton);
 
     $randomButton.addEventListener("click", e => {
@@ -35,7 +52,7 @@ class SearchInput {
     });
 
     this.KeywordHistory = new KeywordHistory({
-      $target,
+      $target: $wrapper,
       onSearch
     })
 
